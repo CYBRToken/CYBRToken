@@ -1,6 +1,6 @@
 # CYBRToken (CYBR)
 
-This repository contains ERC20 token contract code of CYBRTOken.
+This repository contains ERC20 token contract code of CYBRToken.
 
 ## How to Install?
 
