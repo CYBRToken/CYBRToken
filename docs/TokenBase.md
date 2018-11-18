@@ -86,6 +86,8 @@ modifier canTransfer(address _from) internal
 
 ## Functions
 
+- [reclaimEther()](#reclaimether)
+- [reclaimToken(address _token)](#reclaimtoken)
 - [releaseTokenForTransfer()](#releasetokenfortransfer)
 - [disableTokenTransfers()](#disabletokentransfers)
 - [transfer(address _to, uint256 _value)](#transfer)
@@ -97,6 +99,33 @@ modifier canTransfer(address _from) internal
 - [burn(uint256 _value)](#burn)
 - [mintTokens(address _to, uint256 _value)](#minttokens)
 - [sumOf(uint256[] _values)](#sumof)
+
+### reclaimEther
+
+Transfers all Ether held by the contract to the owner.
+
+```js
+function reclaimEther() external nonpayable onlyAdmin 
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+
+### reclaimToken
+
+Transfers all ERC20 tokens held by the contract to the owner.
+
+```js
+function reclaimToken(address _token) external nonpayable onlyAdmin 
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| _token | address | The amount of token to reclaim. | 
 
 ### releaseTokenForTransfer
 
@@ -286,6 +315,8 @@ returns(uint256)
 * [CYBRToken](CYBRToken.md)
 * [ERC20](ERC20.md)
 * [ERC20Basic](ERC20Basic.md)
+* [ERC20Mock](ERC20Mock.md)
+* [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
 * [SafeMath](SafeMath.md)

@@ -90,6 +90,8 @@ An uint256 representing the amount owned by the passed address.
 * [CYBRToken](CYBRToken.md)
 * [ERC20](ERC20.md)
 * [ERC20Basic](ERC20Basic.md)
+* [ERC20Mock](ERC20Mock.md)
+* [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
 * [SafeMath](SafeMath.md)

@@ -563,6 +563,30 @@ contract CustomPausable is CustomAdmin {
 ///CYBR is a standard ERC20 smart contract-based to- ken running 
 ///on the Ethereum network and is implemented 
 ///within the business logic set forth by the Company’s developers.
+/// 
+///The CYBR utility token is redeemable for usage with BlindSpot 
+///and global threat intelligence feeds. The CYBR initiative provides 
+///protection to individual networks, SMEs and large-scale enterprise users. 
+///Intelligence feeds are based on risk scores; packaged in a series of 
+///products/services and delivered via a subscription model which can provide:
+/// 
+///- Assessed zero-day global threat feeds o Json, CSV and XML formats 
+///  - Utilizing IP tables firewall rules
+///  - Magento, Wordpress and related plugins
+///- Global threat intelligence reports
+///- Email alerts
+///- Mobile apps
+///- API key to access CYBR via apps/dapps
+/// 
+///Data feeds will be based on number of user licenses, to be purchased 
+///on a yearly-based subscription model. Special needs assessments, customized solutions, 
+///or any appliance applications can be purchased at an additional cost.
+/// 
+///The CYBR business model is simple: a subscription-based value-added service 
+///with recurring revenues. The company has identified a number of ancillary 
+///revenue streams, ranging from customized packages to the sale of propriety 
+///and modded hardware devices. However, it should be noted that the potent
+///solution that is BlindSpot will drive our quest for adoption.
 contract TokenBase is StandardToken, CustomPausable, BurnableToken {
   //solhint-disable
   uint8 public constant decimals = 18;
@@ -575,7 +599,7 @@ contract TokenBase is StandardToken, CustomPausable, BurnableToken {
   uint256 internal constant MILLION = 1000000 * 1 ether; 
   uint256 internal constant BILLION = 1000000000 * 1 ether; 
   uint256 public constant MAX_SUPPLY = 1 * BILLION;
-  uint256 public constant INITIAL_SUPPLY = 510 * MILLION;
+  uint256 public constant INITIAL_SUPPLY = 510 * MILLION;//51%
 
   event BulkTransferPerformed(address[] _destinations, uint256[] _amounts);
   event TokenReleased(bool _state);
@@ -595,6 +619,19 @@ contract TokenBase is StandardToken, CustomPausable, BurnableToken {
     }
 
     _;
+  }
+
+  ///@notice Transfers all Ether held by the contract to the owner.
+  function reclaimEther() external onlyAdmin {
+    msg.sender.transfer(address(this).balance);
+  }
+
+  ///@notice Transfers all ERC20 tokens held by the contract to the owner.
+  ///@param _token The amount of token to reclaim.
+  function reclaimToken(address _token) external onlyAdmin {
+    ERC20 erc20 = ERC20(_token);
+    uint256 balance = erc20.balanceOf(this);
+    require(erc20.transfer(msg.sender, balance));
   }
 
   ///@notice This function enables token transfers for everyone.
@@ -733,18 +770,43 @@ contract TokenBase is StandardToken, CustomPausable, BurnableToken {
 ///CYBR is a standard ERC20 smart contract-based to- ken running 
 ///on the Ethereum network and is implemented 
 ///within the business logic set forth by the Company’s developers.
+/// 
+///The CYBR utility token is redeemable for usage with BlindSpot 
+///and global threat intelligence feeds. The CYBR initiative provides 
+///protection to individual networks, SMEs and large-scale enterprise users. 
+///Intelligence feeds are based on risk scores; packaged in a series of 
+///products/services and delivered via a subscription model which can provide:
+/// 
+///- Assessed zero-day global threat feeds o Json, CSV and XML formats 
+///  - Utilizing IP tables firewall rules
+///  - Magento, Wordpress and related plugins
+///- Global threat intelligence reports
+///- Email alerts
+///- Mobile apps
+///- API key to access CYBR via apps/dapps
+/// 
+///Data feeds will be based on number of user licenses, to be purchased 
+///on a yearly-based subscription model. Special needs assessments, customized solutions, 
+///or any appliance applications can be purchased at an additional cost.
+/// 
+///The CYBR business model is simple: a subscription-based value-added service 
+///with recurring revenues. The company has identified a number of ancillary 
+///revenue streams, ranging from customized packages to the sale of propriety 
+///and modded hardware devices. However, it should be noted that the potent
+///solution that is BlindSpot will drive our quest for adoption.
 contract CYBRToken is TokenBase {
   //solhint-disable not-rely-on-time
   //solium-disable security/no-block-members
 
   uint256 public icoEndDate;
 
-  uint256 public constant ALLOCATION_FOR_FOUNDERS = 100 * MILLION;
-  uint256 public constant ALLOCATION_FOR_TEAM = 150 * MILLION;
-  uint256 public constant ALLOCATION_FOR_RESERVE = 100 * MILLION;
-  uint256 public constant ALLOCATION_FOR_PARTNERSHIPS = 50 * MILLION;
-  uint256 public constant ALLOCATION_FOR_ADVISORS = 60 * MILLION;
-  uint256 public constant ALLOCATION_FOR_PROMOTION = 30 * MILLION;
+  uint256 public constant ALLOCATION_FOR_FOUNDERS = 100 * MILLION;//10%
+  uint256 public constant ALLOCATION_FOR_TEAM = 100 * MILLION;//10%
+  uint256 public constant ALLOCATION_FOR_RESERVE = 100 * MILLION;//10%
+  uint256 public constant ALLOCATION_FOR_INITIAL_PARTNERSHIPS = 50 * MILLION;//5%
+  uint256 public constant ALLOCATION_FOR_PARTNERSHIPS = 50 * MILLION;//5%
+  uint256 public constant ALLOCATION_FOR_ADVISORS = 60 * MILLION;//6%
+  uint256 public constant ALLOCATION_FOR_PROMOTION = 30 * MILLION;//3%
 
   bool public targetReached = false;
 
@@ -794,7 +856,7 @@ contract CYBRToken is TokenBase {
     return mintOnce("founders", msg.sender, ALLOCATION_FOR_FOUNDERS);
   }
 
-  ///@notice Mints 150 million CYBR tokens allocated to the CYBRToken team.
+  ///@notice Mints 100 million CYBR tokens allocated to the CYBRToken team.
   //The tokens are only available to the founders after 1 year of the ICO end.
   function mintTokensForTeam() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
@@ -814,17 +876,23 @@ contract CYBRToken is TokenBase {
     return mintOnce("reserve", msg.sender, ALLOCATION_FOR_RESERVE);
   }
 
-  ///@notice Mints the below-mentioned amount of tokens allocated for partnerships.
+  ///@notice Mints the 50 million tokens allocated for initial partnerships.
+  //The tokens are only available to the partners after 6 months of the ICO end.
+  function mintTokensForInitialPartnerships() external onlyAdmin returns(bool) {
+    return mintOnce("initialPartnerships", msg.sender, ALLOCATION_FOR_INITIAL_PARTNERSHIPS);
+  }
+
+  ///@notice Mints the 50 million tokens allocated for partnerships.
   //The tokens are only available to the partners after 6 months of the ICO end.
   function mintTokensForPartnerships() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
-    require(now > (icoEndDate + 365 days), "Access is denied, it's too early to mint the partnership tokens.");
+    require(now > (icoEndDate + 182 days), "Access is denied, it's too early to mint the partnership tokens.");
 
     return mintOnce("partnerships", msg.sender, ALLOCATION_FOR_PARTNERSHIPS);
   }
 
-  ///@notice Mints the below-mentioned amount of tokens allocated to the CYBRToken advisors.
+  ///@notice Mints the 60 million tokens allocated to the CYBRToken advisors.
   //The tokens are only available to the advisors after 1 year of the ICO end.
   function mintTokensForAdvisors() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
@@ -834,12 +902,12 @@ contract CYBRToken is TokenBase {
     return mintOnce("advisors", msg.sender, ALLOCATION_FOR_ADVISORS);
   }
 
-  ///@notice Mints the 100 million CYBR tokens allocated to promotion.
-  //The tokens are only available after 1 year of the ICO end.
+  ///@notice Mints the 30 million CYBR tokens allocated to promotion.
+  //The tokens are available at the end of the ICO.
   function mintTokensForPromotion() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
-    require(now > (icoEndDate + 365 days), "Access is denied, it's too early to mint the promotion tokens.");
+    require(now > icoEndDate, "Access is denied, it's too early to mint the promotion tokens.");
 
     return mintOnce("promotion", msg.sender, ALLOCATION_FOR_PROMOTION);
   }

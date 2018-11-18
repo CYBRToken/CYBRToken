@@ -77,6 +77,29 @@ contract('CYBRToken', function (accounts) {
       token = await Token.new();
     });
 
+    it('must correctly mint initial partnership tokens.', async () => {
+      const totalSupply = await token.totalSupply();
+      const initialPartnershipTokens = ether(50 * million);
+
+      /*-------------------------------------------------------------
+       SHOULD NOT ALLOW MINTING BEFORE THE ICO STATE IS SET AS "SUCCESSFUL"
+      -------------------------------------------------------------*/
+      await token.addAdmin(accounts[1]);
+      await token.mintTokensForInitialPartnerships({ from : accounts[1] });
+
+      const balance = await token.balanceOf(accounts[1]);
+      balance.should.be.bignumber.equal(initialPartnershipTokens);
+
+      (await token.totalSupply()).should.be.bignumber.equal(totalSupply.add(initialPartnershipTokens));
+
+      /*-------------------------------------------------------------
+       ADDITIONAL CORRECTNESS RULE(S) 
+      -------------------------------------------------------------*/
+
+      //additional minting attempts of promotion tokens should be declined.
+      await token.mintTokensForInitialPartnerships({ from : accounts[1] }).should.be.rejectedWith(EVMRevert);
+    });
+
     it('must correctly mint promotion tokens only once after the ICO and only if the ICO is successful.', async () => {
       const totalSupply = await token.totalSupply();
       const promotionTokens = ether(30 * million);
@@ -213,7 +236,7 @@ contract('CYBRToken', function (accounts) {
       const totalSupply = await token.totalSupply();
       var balance = 0;
 
-      const teamTokenCount = ether(150 * million);
+      const teamTokenCount = ether(100 * million);
 
       await token.addAdmin(accounts[1]);
       await token.setICOEndDate(icoEndsOn);
@@ -345,6 +368,7 @@ contract('CYBRToken', function (accounts) {
       await token.mintTokensForFounders({ from : accounts[0] });
       await token.mintTokensForTeam({ from : accounts[0] });
       await token.mintReserveTokens({ from : accounts[0] });
+      await token.mintTokensForInitialPartnerships({ from : accounts[0] });
       await token.mintTokensForPartnerships({ from : accounts[0] });
       await token.mintTokensForAdvisors({ from : accounts[0] });
 

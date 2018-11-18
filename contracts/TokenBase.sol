@@ -64,7 +64,7 @@ contract TokenBase is StandardToken, CustomPausable, BurnableToken {
   uint256 internal constant MILLION = 1000000 * 1 ether; 
   uint256 internal constant BILLION = 1000000000 * 1 ether; 
   uint256 public constant MAX_SUPPLY = 1 * BILLION;
-  uint256 public constant INITIAL_SUPPLY = 510 * MILLION;
+  uint256 public constant INITIAL_SUPPLY = 510 * MILLION;//51%
 
   event BulkTransferPerformed(address[] _destinations, uint256[] _amounts);
   event TokenReleased(bool _state);
