@@ -105,6 +105,7 @@ function _transferOwnership(address _newOwner) internal nonpayable
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
 * [Reclaimable](Reclaimable.md)
+* [SafeERC20](SafeERC20.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)

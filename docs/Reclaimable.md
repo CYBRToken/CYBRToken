@@ -58,6 +58,7 @@ function reclaimToken(address _token) external nonpayable onlyAdmin
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
 * [Reclaimable](Reclaimable.md)
+* [SafeERC20](SafeERC20.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)

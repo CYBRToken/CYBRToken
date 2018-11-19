@@ -64,6 +64,7 @@ function _burn(address _who, uint256 _value) internal nonpayable
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
 * [Reclaimable](Reclaimable.md)
+* [SafeERC20](SafeERC20.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)
