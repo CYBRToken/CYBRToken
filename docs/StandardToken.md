@@ -4,7 +4,7 @@
 View Source: [openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol](../openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol)
 
 **↗ Extends: [ERC20](ERC20.md), [BasicToken](BasicToken.md)**
-**↘ Derived Contracts: [ERC20Mock](ERC20Mock.md), [TokenBase](TokenBase.md)**
+**↘ Derived Contracts: [BulkTransfer](BulkTransfer.md), [ERC20Mock](ERC20Mock.md), [TokenBase](TokenBase.md)**
 
 **StandardToken**
 
@@ -142,6 +142,7 @@ returns(bool)
 ## Contracts
 
 * [BasicToken](BasicToken.md)
+* [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
 * [CustomPausable](CustomPausable.md)
@@ -152,6 +153,8 @@ returns(bool)
 * [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
+* [Reclaimable](Reclaimable.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)
+* [TransferState](TransferState.md)

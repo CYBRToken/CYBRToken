@@ -3,7 +3,7 @@
 View Source: [contracts/CustomPausable.sol](../contracts/CustomPausable.sol)
 
 **↗ Extends: [CustomAdmin](CustomAdmin.md)**
-**↘ Derived Contracts: [TokenBase](TokenBase.md)**
+**↘ Derived Contracts: [TransferState](TransferState.md)**
 
 **CustomPausable**
 
@@ -87,6 +87,7 @@ function unpause() external nonpayable onlyAdmin whenPaused
 ## Contracts
 
 * [BasicToken](BasicToken.md)
+* [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
 * [CustomPausable](CustomPausable.md)
@@ -97,6 +98,8 @@ function unpause() external nonpayable onlyAdmin whenPaused
 * [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
+* [Reclaimable](Reclaimable.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)
+* [TransferState](TransferState.md)

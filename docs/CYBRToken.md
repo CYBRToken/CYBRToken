@@ -48,6 +48,7 @@ uint256 public icoEndDate;
 uint256 public constant ALLOCATION_FOR_FOUNDERS;
 uint256 public constant ALLOCATION_FOR_TEAM;
 uint256 public constant ALLOCATION_FOR_RESERVE;
+uint256 public constant ALLOCATION_FOR_INITIAL_PARTNERSHIPS;
 uint256 public constant ALLOCATION_FOR_PARTNERSHIPS;
 uint256 public constant ALLOCATION_FOR_ADVISORS;
 uint256 public constant ALLOCATION_FOR_PROMOTION;
@@ -90,6 +91,7 @@ modifier whenNotMinted(string _key) internal
 - [mintTokensForFounders()](#minttokensforfounders)
 - [mintTokensForTeam()](#minttokensforteam)
 - [mintReserveTokens()](#mintreservetokens)
+- [mintTokensForInitialPartnerships()](#minttokensforinitialpartnerships)
 - [mintTokensForPartnerships()](#minttokensforpartnerships)
 - [mintTokensForAdvisors()](#minttokensforadvisors)
 - [mintTokensForPromotion()](#minttokensforpromotion)
@@ -143,7 +145,7 @@ returns(bool)
 
 ### mintTokensForTeam
 
-Mints 150 million CYBR tokens allocated to the CYBRToken team.
+Mints 100 million CYBR tokens allocated to the CYBRToken team.
 
 ```js
 function mintTokensForTeam() external nonpayable onlyAdmin 
@@ -161,6 +163,20 @@ Mints the 100 million CYBR tokens allocated to the operational reserves.
 
 ```js
 function mintReserveTokens() external nonpayable onlyAdmin 
+returns(bool)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+
+### mintTokensForInitialPartnerships
+
+Mints the 50 million tokens allocated for initial partnerships.
+
+```js
+function mintTokensForInitialPartnerships() external nonpayable onlyAdmin 
 returns(bool)
 ```
 
@@ -246,6 +262,7 @@ returns(bool)
 ## Contracts
 
 * [BasicToken](BasicToken.md)
+* [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
 * [CustomPausable](CustomPausable.md)
@@ -256,6 +273,8 @@ returns(bool)
 * [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
+* [Reclaimable](Reclaimable.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)
+* [TransferState](TransferState.md)

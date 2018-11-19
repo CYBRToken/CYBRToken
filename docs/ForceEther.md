@@ -23,6 +23,7 @@ function destroyAndSend(address _recipient) public nonpayable
 ## Contracts
 
 * [BasicToken](BasicToken.md)
+* [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
 * [CustomPausable](CustomPausable.md)
@@ -33,6 +34,8 @@ function destroyAndSend(address _recipient) public nonpayable
 * [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
+* [Reclaimable](Reclaimable.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)
+* [TransferState](TransferState.md)

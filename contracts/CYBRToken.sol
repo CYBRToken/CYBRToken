@@ -38,7 +38,7 @@ import "./TokenBase.sol";
 ///  - Magento, Wordpress and related plugins
 ///- Global threat intelligence reports
 ///- Email alerts
-///- Mobile apps
+  ///- Mobile apps
 ///- API key to access CYBR via apps/dapps
 /// 
 ///Data feeds will be based on number of user licenses, to be purchased 

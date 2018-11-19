@@ -60,6 +60,7 @@ function upgrade(address new_address) public nonpayable restricted
 ## Contracts
 
 * [BasicToken](BasicToken.md)
+* [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
 * [CustomPausable](CustomPausable.md)
@@ -70,6 +71,8 @@ function upgrade(address new_address) public nonpayable restricted
 * [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
+* [Reclaimable](Reclaimable.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)
+* [TransferState](TransferState.md)

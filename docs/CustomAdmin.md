@@ -3,7 +3,7 @@
 View Source: [contracts/CustomAdmin.sol](../contracts/CustomAdmin.sol)
 
 **↗ Extends: [Ownable](Ownable.md)**
-**↘ Derived Contracts: [CustomPausable](CustomPausable.md)**
+**↘ Derived Contracts: [BulkTransfer](BulkTransfer.md), [CustomPausable](CustomPausable.md), [Reclaimable](Reclaimable.md)**
 
 **CustomAdmin**
 
@@ -125,6 +125,7 @@ returns(bool)
 ## Contracts
 
 * [BasicToken](BasicToken.md)
+* [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
 * [CustomPausable](CustomPausable.md)
@@ -135,6 +136,8 @@ returns(bool)
 * [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
+* [Reclaimable](Reclaimable.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)
+* [TransferState](TransferState.md)

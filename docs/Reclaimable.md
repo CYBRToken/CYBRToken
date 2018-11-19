@@ -1,53 +1,47 @@
-# Burnable Token (BurnableToken.sol)
+# Reclaimable Contract (Reclaimable.sol)
 
-View Source: [openzeppelin-solidity/contracts/token/ERC20/BurnableToken.sol](../openzeppelin-solidity/contracts/token/ERC20/BurnableToken.sol)
+View Source: [contracts/Reclaimable.sol](../contracts/Reclaimable.sol)
 
-**↗ Extends: [BasicToken](BasicToken.md)**
+**↗ Extends: [CustomAdmin](CustomAdmin.md)**
 **↘ Derived Contracts: [TokenBase](TokenBase.md)**
 
-**BurnableToken**
+**Reclaimable**
 
-Token that can be irreversibly burned (destroyed).
-
-**Events**
-
-```js
-event Burn(address indexed burner, uint256  value);
-```
+Reclaimable contract enables the administrators 
+to reclaim accidentally sent Ethers and ERC20 token(s)
+to this contract.
 
 ## Functions
 
-- [burn(uint256 _value)](#burn)
-- [_burn(address _who, uint256 _value)](#_burn)
+- [reclaimEther()](#reclaimether)
+- [reclaimToken(address _token)](#reclaimtoken)
 
-### burn
+### reclaimEther
 
-⤿ Overridden Implementation(s): [TokenBase.burn](TokenBase.md#burn)
-
-Burns a specific amount of tokens.
+Transfers all Ether held by the contract to the owner.
 
 ```js
-function burn(uint256 _value) public nonpayable
+function reclaimEther() external nonpayable onlyAdmin 
 ```
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| _value | uint256 | The amount of token to be burned. | 
 
-### _burn
+### reclaimToken
+
+Transfers all ERC20 tokens held by the contract to the owner.
 
 ```js
-function _burn(address _who, uint256 _value) internal nonpayable
+function reclaimToken(address _token) external nonpayable onlyAdmin 
 ```
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| _who | address |  | 
-| _value | uint256 |  | 
+| _token | address | The amount of token to reclaim. | 
 
 ## Contracts
 

@@ -2,7 +2,7 @@
 
 View Source: [contracts/TokenBase.sol](../contracts/TokenBase.sol)
 
-**↗ Extends: [StandardToken](StandardToken.md), [CustomPausable](CustomPausable.md), [BurnableToken](BurnableToken.md)**
+**↗ Extends: [StandardToken](StandardToken.md), [TransferState](TransferState.md), [BulkTransfer](BulkTransfer.md), [Reclaimable](Reclaimable.md), [BurnableToken](BurnableToken.md)**
 **↘ Derived Contracts: [CYBRToken](CYBRToken.md)**
 
 **TokenBase**
@@ -48,7 +48,6 @@ solution that is BlindSpot will drive our quest for adoption.
 uint8 public constant decimals;
 string public constant name;
 string public constant symbol;
-bool public released;
 uint256 public constant MAX_SUPPLY;
 uint256 public constant INITIAL_SUPPLY;
 
@@ -61,100 +60,18 @@ uint256 internal constant BILLION;
 **Events**
 
 ```js
-event BulkTransferPerformed(address[]  _destinations, uint256[]  _amounts);
-event TokenReleased(bool  _state);
 event Mint(address indexed to, uint256  amount);
 ```
 
-## Modifiers
-
-- [canTransfer](#cantransfer)
-
-### canTransfer
-
-Checks if the supplied address is able to perform transfers.
-
-```js
-modifier canTransfer(address _from) internal
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| _from | address | The address to check against if the transfer is allowed. | 
-
 ## Functions
 
-- [reclaimEther()](#reclaimether)
-- [reclaimToken(address _token)](#reclaimtoken)
-- [releaseTokenForTransfer()](#releasetokenfortransfer)
-- [disableTokenTransfers()](#disabletokentransfers)
 - [transfer(address _to, uint256 _value)](#transfer)
 - [transferFrom(address _from, address _to, uint256 _value)](#transferfrom)
 - [approve(address _spender, uint256 _value)](#approve)
 - [increaseApproval(address _spender, uint256 _addedValue)](#increaseapproval)
 - [decreaseApproval(address _spender, uint256 _subtractedValue)](#decreaseapproval)
-- [bulkTransfer(address[] _destinations, uint256[] _amounts)](#bulktransfer)
 - [burn(uint256 _value)](#burn)
 - [mintTokens(address _to, uint256 _value)](#minttokens)
-- [sumOf(uint256[] _values)](#sumof)
-
-### reclaimEther
-
-Transfers all Ether held by the contract to the owner.
-
-```js
-function reclaimEther() external nonpayable onlyAdmin 
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-
-### reclaimToken
-
-Transfers all ERC20 tokens held by the contract to the owner.
-
-```js
-function reclaimToken(address _token) external nonpayable onlyAdmin 
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| _token | address | The amount of token to reclaim. | 
-
-### releaseTokenForTransfer
-
-This function enables token transfers for everyone.
-Can only be enabled after the end of the ICO.
-
-```js
-function releaseTokenForTransfer() external nonpayable onlyAdmin whenNotPaused 
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-
-### disableTokenTransfers
-
-This function disables token transfers for everyone.
-
-```js
-function disableTokenTransfers() external nonpayable onlyAdmin whenNotPaused 
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
 
 ### transfer
 
@@ -245,22 +162,6 @@ returns(bool)
 | _spender | address | The address of the spender to decrease the allocation from. | 
 | _subtractedValue | uint256 | The amount of tokens to subtract from the approved allocation. | 
 
-### bulkTransfer
-
-Allows only the admins and/or whitelisted applications to perform bulk transfer operation.
-
-```js
-function bulkTransfer(address[] _destinations, uint256[] _amounts) public nonpayable onlyAdmin 
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| _destinations | address[] | The destination wallet addresses to send funds to. | 
-| _amounts | uint256[] | The respective amount of fund to send to the specified addresses. | 
-
 ### burn
 
 ⤾ overrides [BurnableToken.burn](BurnableToken.md#burn)
@@ -291,24 +192,10 @@ returns(bool)
 | _to | address | The address which will receive the minted tokens. | 
 | _value | uint256 | The amount of tokens to mint. | 
 
-### sumOf
-
-Returns the sum of supplied values.
-
-```js
-function sumOf(uint256[] _values) private pure
-returns(uint256)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| _values | uint256[] | The collection of values to create the sum from. | 
-
 ## Contracts
 
 * [BasicToken](BasicToken.md)
+* [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
 * [CustomPausable](CustomPausable.md)
@@ -319,6 +206,8 @@ returns(uint256)
 * [ForceEther](ForceEther.md)
 * [Migrations](Migrations.md)
 * [Ownable](Ownable.md)
+* [Reclaimable](Reclaimable.md)
 * [SafeMath](SafeMath.md)
 * [StandardToken](StandardToken.md)
 * [TokenBase](TokenBase.md)
+* [TransferState](TransferState.md)
