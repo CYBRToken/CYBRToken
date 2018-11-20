@@ -160,7 +160,7 @@ contract('CYBRToken', function (accounts) {
       await increaseTimeTo(endDate + duration.days(182) + duration.seconds(1));
 
       /*-------------------------------------------------------------
-       FOUNDER TOKEN MINTING
+       PARTNERSHIP TOKEN MINTING
       -------------------------------------------------------------*/
 
       await token.mintTokensForPartnerships({
@@ -177,50 +177,6 @@ contract('CYBRToken', function (accounts) {
       -------------------------------------------------------------*/
 
       await token.mintTokensForPartnerships().should.be.rejectedWith(EVMRevert);
-    });
-
-    it('must not allow minting of founder tokens before the specified date.', async () => {
-      await token.addAdmin(accounts[1]);
-      await token.setSuccess();
-
-      await token.mintTokensForFounders({
-        from: accounts[1]
-      }).should.be.rejectedWith(EVMRevert);
-    });
-
-    it('must allow minting of founder tokens only once after 1 year from the ICO end date.', async () => {
-      const totalSupply = await token.totalSupply();
-      var balance = 0;
-
-      const founderTokenCount = ether(100 * million);
-
-      await token.addAdmin(accounts[1]);
-      await token.setICOEndDate(icoEndsOn);
-      await token.setSuccess();
-
-      const endDate = (await token.icoEndDate()).toNumber();
-
-      //Need to increase the EVM time after the lockup period.
-      await increaseTimeTo(endDate + duration.days(365) + duration.seconds(1));
-
-      /*-------------------------------------------------------------
-       FOUNDER TOKEN MINTING
-      -------------------------------------------------------------*/
-
-      await token.mintTokensForFounders({
-        from: accounts[1]
-      });
-
-      balance = await token.balanceOf(accounts[1]);
-      balance.should.be.bignumber.equal(founderTokenCount);
-
-      (await token.totalSupply()).should.be.bignumber.equal(totalSupply.add(founderTokenCount));
-
-      /*-------------------------------------------------------------
-       ADDITIONAL CORRECTNESS RULES
-      -------------------------------------------------------------*/
-
-      await token.mintTokensForFounders().should.be.rejectedWith(EVMRevert);
     });
 
     it('must not allow minting of team tokens before the specified date.', async () => {
@@ -353,6 +309,50 @@ contract('CYBRToken', function (accounts) {
       -------------------------------------------------------------*/
 
       await token.mintTokensForAdvisors().should.be.rejectedWith(EVMRevert);
+    });
+
+    it('must not allow minting of founder tokens before the specified date.', async () => {
+      await token.addAdmin(accounts[1]);
+      await token.setSuccess();
+
+      await token.mintTokensForFounders({
+        from: accounts[1]
+      }).should.be.rejectedWith(EVMRevert);
+    });
+
+    it('must allow minting of founder tokens only once after 18 months from the ICO end date.', async () => {
+      const totalSupply = await token.totalSupply();
+      var balance = 0;
+
+      const founderTokenCount = ether(100 * million);
+
+      await token.addAdmin(accounts[1]);
+      await token.setICOEndDate(icoEndsOn);
+      await token.setSuccess();
+
+      const endDate = (await token.icoEndDate()).toNumber();
+
+      //Need to increase the EVM time after the lockup period.
+      await increaseTimeTo(endDate + duration.days(548) + duration.seconds(1));
+
+      /*-------------------------------------------------------------
+       FOUNDER TOKEN MINTING
+      -------------------------------------------------------------*/
+
+      await token.mintTokensForFounders({
+        from: accounts[1]
+      });
+
+      balance = await token.balanceOf(accounts[1]);
+      balance.should.be.bignumber.equal(founderTokenCount);
+
+      (await token.totalSupply()).should.be.bignumber.equal(totalSupply.add(founderTokenCount));
+
+      /*-------------------------------------------------------------
+       ADDITIONAL CORRECTNESS RULES
+      -------------------------------------------------------------*/
+
+      await token.mintTokensForFounders().should.be.rejectedWith(EVMRevert);
     });
 
     it('must exactly match the set maximum supply after all minting is performed.', async () => {

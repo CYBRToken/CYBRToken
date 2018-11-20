@@ -967,11 +967,11 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints the 100 million CYBR tokens allocated to the CYBRToken founders.
-  //The tokens are only available to the founders after 1 year of the ICO end.
+  //The tokens are only available to the founders after 18 months of the ICO end.
   function mintTokensForFounders() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
-    require(now > (icoEndDate + 365 days), "Access is denied, it's too early to mint founder tokens.");
+    require(now > (icoEndDate + 548 days), "Access is denied, it's too early to mint founder tokens.");
 
     return mintOnce("founders", msg.sender, ALLOCATION_FOR_FOUNDERS);
   }
