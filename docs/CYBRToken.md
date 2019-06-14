@@ -132,6 +132,7 @@ returns(bool)
 ### mintTokensForFounders
 
 Mints the 100 million CYBR tokens allocated to the CYBRToken founders.
+The tokens are only available to the founders after 18 months of the ICO end.
 
 ```js
 function mintTokensForFounders() external nonpayable onlyAdmin 
@@ -146,6 +147,7 @@ returns(bool)
 ### mintTokensForTeam
 
 Mints 100 million CYBR tokens allocated to the CYBRToken team.
+The tokens are only available to the founders after 1 year of the ICO end.
 
 ```js
 function mintTokensForTeam() external nonpayable onlyAdmin 
@@ -160,6 +162,7 @@ returns(bool)
 ### mintReserveTokens
 
 Mints the 100 million CYBR tokens allocated to the operational reserves.
+The tokens are only available in the reserves after 1 year of the ICO end.
 
 ```js
 function mintReserveTokens() external nonpayable onlyAdmin 
@@ -174,6 +177,7 @@ returns(bool)
 ### mintTokensForInitialPartnerships
 
 Mints the 50 million tokens allocated for initial partnerships.
+The tokens are only available to the partners after 6 months of the ICO end.
 
 ```js
 function mintTokensForInitialPartnerships() external nonpayable onlyAdmin 
@@ -188,6 +192,7 @@ returns(bool)
 ### mintTokensForPartnerships
 
 Mints the 50 million tokens allocated for partnerships.
+The tokens are only available to the partners after 6 months of the ICO end.
 
 ```js
 function mintTokensForPartnerships() external nonpayable onlyAdmin 
@@ -202,6 +207,7 @@ returns(bool)
 ### mintTokensForAdvisors
 
 Mints the 60 million tokens allocated to the CYBRToken advisors.
+The tokens are only available to the advisors after 1 year of the ICO end.
 
 ```js
 function mintTokensForAdvisors() external nonpayable onlyAdmin 
@@ -216,6 +222,7 @@ returns(bool)
 ### mintTokensForPromotion
 
 Mints the 30 million CYBR tokens allocated to promotion.
+The tokens are available at the end of the ICO.
 
 ```js
 function mintTokensForPromotion() external nonpayable onlyAdmin 

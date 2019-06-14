@@ -91,7 +91,7 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice This function enables the whitelisted application (internal application) to set the 
-  /// ICO end date and can only be used once.
+  ///ICO end date and can only be used once.
   ///@param _date The date to set as the ICO end date.
   function setICOEndDate(uint _date) external onlyAdmin returns(bool) {
     require(icoEndDate == 0, "The ICO end date was already set.");
@@ -103,7 +103,7 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints the 100 million CYBR tokens allocated to the CYBRToken founders.
-  //The tokens are only available to the founders after 18 months of the ICO end.
+  ///The tokens are only available to the founders after 18 months of the ICO end.
   function mintTokensForFounders() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -113,7 +113,7 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints 100 million CYBR tokens allocated to the CYBRToken team.
-  //The tokens are only available to the founders after 1 year of the ICO end.
+  ///The tokens are only available to the founders after 1 year of the ICO end.
   function mintTokensForTeam() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -123,7 +123,7 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints the 100 million CYBR tokens allocated to the operational reserves.
-  //The tokens are only available in the reserves after 1 year of the ICO end.
+  ///The tokens are only available in the reserves after 1 year of the ICO end.
   function mintReserveTokens() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -133,13 +133,13 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints the 50 million tokens allocated for initial partnerships.
-  //The tokens are only available to the partners after 6 months of the ICO end.
+  ///The tokens are only available to the partners after 6 months of the ICO end.
   function mintTokensForInitialPartnerships() external onlyAdmin returns(bool) {
     return mintOnce("initialPartnerships", msg.sender, ALLOCATION_FOR_INITIAL_PARTNERSHIPS);
   }
 
   ///@notice Mints the 50 million tokens allocated for partnerships.
-  //The tokens are only available to the partners after 6 months of the ICO end.
+  ///The tokens are only available to the partners after 6 months of the ICO end.
   function mintTokensForPartnerships() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -149,7 +149,7 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints the 60 million tokens allocated to the CYBRToken advisors.
-  //The tokens are only available to the advisors after 1 year of the ICO end.
+  ///The tokens are only available to the advisors after 1 year of the ICO end.
   function mintTokensForAdvisors() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -159,7 +159,7 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints the 30 million CYBR tokens allocated to promotion.
-  //The tokens are available at the end of the ICO.
+  ///The tokens are available at the end of the ICO.
   function mintTokensForPromotion() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
