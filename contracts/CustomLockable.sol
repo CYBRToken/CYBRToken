@@ -51,6 +51,7 @@ contract CustomLockable is CustomAdmin {
   function isLocked(address _wallet) public view returns(bool) {
     uint256 _lockedUntil = lockingList[_wallet];
 
+    //solium-disable-next-line
     if(_lockedUntil > now) {
       return true;
     }

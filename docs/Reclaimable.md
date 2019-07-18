@@ -7,7 +7,7 @@ View Source: [contracts/Reclaimable.sol](../contracts/Reclaimable.sol)
 
 **Reclaimable**
 
-Reclaimable contract enables the administrators 
+Reclaimable contract enables the administrators
 to reclaim accidentally sent Ethers and ERC20 token(s)
 to this contract.
 

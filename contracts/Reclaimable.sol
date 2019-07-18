@@ -20,7 +20,7 @@ import "./CustomAdmin.sol";
 
 ///@title Reclaimable Contract
 ///@author Binod Nirvan
-///@notice Reclaimable contract enables the administrators 
+///@notice Reclaimable contract enables the administrators
 ///to reclaim accidentally sent Ethers and ERC20 token(s)
 ///to this contract.
 contract Reclaimable is CustomAdmin {
