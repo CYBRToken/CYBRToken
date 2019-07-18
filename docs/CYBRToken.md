@@ -1,4 +1,4 @@
-# CYBR Token (CYBRToken.sol)
+# Cyber Security Ecosystem Token (CYBRToken.sol)
 
 View Source: [contracts/CYBRToken.sol](../contracts/CYBRToken.sol)
 
@@ -6,11 +6,11 @@ View Source: [contracts/CYBRToken.sol](../contracts/CYBRToken.sol)
 
 **CYBRToken**
 
-CYBR Tokens are designed to incentivize and provide 
+Cyber Security Ecosystem Tokens are designed to incentivize and provide 
 functionality for the three-pronged CYBR solution. 
 Subscription services and the provision of blockchain related services 
-will be solely transacted utilizing CYBR Tokens. 
-Rewards for CYBR community members will be a determined allocation of CYBR Tokens. 
+will be solely transacted utilizing Cyber Security Ecosystem Tokens. 
+Rewards for CYBR community members will be a determined allocation of Cyber Security Ecosystem Tokens. 
 CYBR is a standard ERC20 smart contract-based to- ken running 
 on the Ethereum network and is implemented 
 within the business logic set forth by the Company’s developers.
@@ -116,7 +116,7 @@ returns(bool)
 ### setICOEndDate
 
 This function enables the whitelisted application (internal application) to set the 
- ICO end date and can only be used once.
+ICO end date and can only be used once.
 
 ```js
 function setICOEndDate(uint256 _date) external nonpayable onlyAdmin 
@@ -131,7 +131,7 @@ returns(bool)
 
 ### mintTokensForFounders
 
-Mints the 100 million CYBR tokens allocated to the CYBRToken founders.
+Mints the 100 million Cyber Security Ecosystem Tokens allocated to the CYBRToken founders.
 The tokens are only available to the founders after 18 months of the ICO end.
 
 ```js
@@ -146,7 +146,7 @@ returns(bool)
 
 ### mintTokensForTeam
 
-Mints 100 million CYBR tokens allocated to the CYBRToken team.
+Mints 100 million Cyber Security Ecosystem Tokens allocated to the CYBRToken team.
 The tokens are only available to the founders after 1 year of the ICO end.
 
 ```js
@@ -161,7 +161,7 @@ returns(bool)
 
 ### mintReserveTokens
 
-Mints the 100 million CYBR tokens allocated to the operational reserves.
+Mints the 100 million Cyber Security Ecosystem Tokens allocated to the operational reserves.
 The tokens are only available in the reserves after 1 year of the ICO end.
 
 ```js
@@ -221,7 +221,7 @@ returns(bool)
 
 ### mintTokensForPromotion
 
-Mints the 30 million CYBR tokens allocated to promotion.
+Mints the 30 million Cyber Security Ecosystem Tokens allocated to promotion.
 The tokens are available at the end of the ICO.
 
 ```js
@@ -272,6 +272,8 @@ returns(bool)
 * [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
+* [CustomLockable](CustomLockable.md)
+* [CustomOwnable](CustomOwnable.md)
 * [CustomPausable](CustomPausable.md)
 * [CYBRToken](CYBRToken.md)
 * [ERC20](ERC20.md)

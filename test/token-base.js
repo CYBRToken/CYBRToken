@@ -10,7 +10,7 @@ require("chai")
   .use(require("chai-bignumber")(BigNumber))
   .should();
 
-contract("TokenBase", function (accounts) {
+contract("TokenBase", function(accounts) {
   describe("Token Creation Ruleset", () => {
     it("must correctly deploy with correct parameters and state variables.", async () => {
       let token = await Token.new();
@@ -21,12 +21,18 @@ contract("TokenBase", function (accounts) {
       assert.equal(await token.owner(), owner);
       assert.equal(await token.released(), false);
       assert.equal((await token.decimals()).toNumber(), 18);
-      assert.equal(await token.name(), "CYBR Token");
+      assert.equal(await token.name(), "CYBR - Cyber Security Ecosystem Token");
       assert.equal(await token.symbol(), "CYBR");
 
-      (await token.MAX_SUPPLY()).should.bignumber.equal(ether(expectedMaxSupply));
-      (await token.totalSupply()).should.bignumber.equal(ether(expectedInitialSupply));
-      (await token.balanceOf(owner)).should.bignumber.equal(ether(expectedInitialSupply));
+      (await token.MAX_SUPPLY()).should.bignumber.equal(
+        ether(expectedMaxSupply)
+      );
+      (await token.totalSupply()).should.bignumber.equal(
+        ether(expectedInitialSupply)
+      );
+      (await token.balanceOf(owner)).should.bignumber.equal(
+        ether(expectedInitialSupply)
+      );
     });
   });
 
@@ -42,17 +48,21 @@ contract("TokenBase", function (accounts) {
     it("must only allow admins to release tokens for transfers.", async () => {
       let token = await Token.new();
 
-      await token.enableTransfers({
-        from: accounts[1]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .enableTransfers({
+          from: accounts[1]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must not allow anyone to release tokens for transfer when the token is paused.", async () => {
       let token = await Token.new();
       await token.pause();
-      await token.enableTransfers({
-        from: accounts[1]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .enableTransfers({
+          from: accounts[1]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
   });
 
@@ -81,9 +91,11 @@ contract("TokenBase", function (accounts) {
       let accounts2Balance = await token.balanceOf(accounts[2]);
       assert.equal(accounts2Balance.toNumber(), 9);
 
-      await token.transfer(accounts[3], 8, {
-        from: accounts[2]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .transfer(accounts[3], 8, {
+          from: accounts[2]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must only allow an admin to approve spenders when the transfer state is disabled.", async () => {
@@ -92,9 +104,11 @@ contract("TokenBase", function (accounts) {
       assert.equal(account3Allowance.toNumber(), 10);
 
       await token.transfer(accounts[3], 10);
-      await token.approve(accounts[2], 9, {
-        from: accounts[3]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .approve(accounts[2], 9, {
+          from: accounts[3]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must only allow an admin to increase approvals when the transfer state is disabled.", async () => {
@@ -109,9 +123,11 @@ contract("TokenBase", function (accounts) {
         from: accounts[1]
       });
       await token.removeAdmin(accounts[1]);
-      await token.increaseApproval(accounts[3], 1, {
-        from: accounts[1]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .increaseApproval(accounts[3], 1, {
+          from: accounts[1]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must only allow an admin to decrease approvals when the transfer state is disabled.", async () => {
@@ -126,9 +142,11 @@ contract("TokenBase", function (accounts) {
         from: accounts[1]
       });
       await token.removeAdmin(accounts[1]);
-      await token.decreaseApproval(accounts[3], 1, {
-        from: accounts[1]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .decreaseApproval(accounts[3], 1, {
+          from: accounts[1]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must only allow an admin to transfer from approved accounts when the transfer state is disabled.", async () => {
@@ -145,9 +163,11 @@ contract("TokenBase", function (accounts) {
         from: accounts[1]
       });
       await token.removeAdmin(accounts[1]);
-      await token.transferFrom(accounts[1], accounts[0], 1, {
-        from: accounts[4]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .transferFrom(accounts[1], accounts[0], 1, {
+          from: accounts[4]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
   });
 
@@ -172,9 +192,11 @@ contract("TokenBase", function (accounts) {
       let accounts2Balance = await token.balanceOf(accounts[2]);
       assert.equal(accounts2Balance.toNumber(), 9);
 
-      await token.transfer(accounts[3], 8, {
-        from: accounts[2]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .transfer(accounts[3], 8, {
+          from: accounts[2]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must only allow an admin to approve spenders when the token is paused.", async () => {
@@ -183,9 +205,11 @@ contract("TokenBase", function (accounts) {
       assert.equal(account3Allowance.toNumber(), 10);
 
       await token.transfer(accounts[3], 10);
-      await token.approve(accounts[2], 9, {
-        from: accounts[3]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .approve(accounts[2], 9, {
+          from: accounts[3]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must only allow an admin to increase approvals when the token is paused.", async () => {
@@ -200,9 +224,11 @@ contract("TokenBase", function (accounts) {
         from: accounts[1]
       });
       await token.removeAdmin(accounts[1]);
-      await token.increaseApproval(accounts[3], 1, {
-        from: accounts[1]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .increaseApproval(accounts[3], 1, {
+          from: accounts[1]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must only allow an admin to decrease approvals when the token is paused.", async () => {
@@ -217,9 +243,11 @@ contract("TokenBase", function (accounts) {
         from: accounts[1]
       });
       await token.removeAdmin(accounts[1]);
-      await token.decreaseApproval(accounts[3], 1, {
-        from: accounts[1]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .decreaseApproval(accounts[3], 1, {
+          from: accounts[1]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
 
     it("must only allow an admin to transfer from approved accounts when the token is paused.", async () => {
@@ -236,9 +264,11 @@ contract("TokenBase", function (accounts) {
         from: accounts[1]
       });
       await token.removeAdmin(accounts[1]);
-      await token.transferFrom(accounts[1], accounts[0], 1, {
-        from: accounts[4]
-      }).should.be.rejectedWith(EVMRevert);
+      await token
+        .transferFrom(accounts[1], accounts[0], 1, {
+          from: accounts[4]
+        })
+        .should.be.rejectedWith(EVMRevert);
     });
   });
 
@@ -266,7 +296,9 @@ contract("TokenBase", function (accounts) {
         from: accounts[2]
       });
 
-      (await token.balanceOf(accounts[2])).should.be.bignumber.equal(balance.sub(1));
+      (await token.balanceOf(accounts[2])).should.be.bignumber.equal(
+        balance.sub(1)
+      );
     });
   });
 

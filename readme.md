@@ -58,11 +58,11 @@ solidoc
 
 # About CYBRToken
 
-CYBR Tokens are designed to incentivize and provide 
+Cyber Security Ecosystem Tokens are designed to incentivize and provide 
 functionality for the three-pronged CYBR solution. 
 Subscription services and the provision of blockchain related services 
-will be solely transacted utilizing CYBR Tokens. 
-Rewards for CYBR community members will be a determined allocation of CYBR Tokens. 
+will be solely transacted utilizing Cyber Security Ecosystem Tokens. 
+Rewards for CYBR community members will be a determined allocation of Cyber Security Ecosystem Tokens. 
 CYBR is a standard ERC20 smart contract-based to- ken running 
 on the Ethereum network and is implemented 
 within the business logic set forth by the Company’s developers.

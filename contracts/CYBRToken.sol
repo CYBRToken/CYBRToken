@@ -16,13 +16,13 @@ pragma solidity ^0.4.24;
 import "./TokenBase.sol";
 
 
-///@title CYBR Token
+///@title Cyber Security Ecosystem Token
 ///@author Binod Nirvan
-///@notice CYBR Tokens are designed to incentivize and provide 
+///@notice Cyber Security Ecosystem Tokens are designed to incentivize and provide 
 ///functionality for the three-pronged CYBR solution. 
 ///Subscription services and the provision of blockchain related services 
-///will be solely transacted utilizing CYBR Tokens. 
-///Rewards for CYBR community members will be a determined allocation of CYBR Tokens. 
+///will be solely transacted utilizing Cyber Security Ecosystem Tokens. 
+///Rewards for CYBR community members will be a determined allocation of Cyber Security Ecosystem Tokens. 
 ///CYBR is a standard ERC20 smart contract-based to- ken running 
 ///on the Ethereum network and is implemented 
 ///within the business logic set forth by the Company’s developers.
@@ -102,7 +102,7 @@ contract CYBRToken is TokenBase {
     return true;
   }
 
-  ///@notice Mints the 100 million CYBR tokens allocated to the CYBRToken founders.
+  ///@notice Mints the 100 million Cyber Security Ecosystem Tokens allocated to the CYBRToken founders.
   ///The tokens are only available to the founders after 18 months of the ICO end.
   function mintTokensForFounders() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
@@ -112,7 +112,7 @@ contract CYBRToken is TokenBase {
     return mintOnce("founders", msg.sender, ALLOCATION_FOR_FOUNDERS);
   }
 
-  ///@notice Mints 100 million CYBR tokens allocated to the CYBRToken team.
+  ///@notice Mints 100 million Cyber Security Ecosystem Tokens allocated to the CYBRToken team.
   ///The tokens are only available to the founders after 1 year of the ICO end.
   function mintTokensForTeam() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
@@ -122,7 +122,7 @@ contract CYBRToken is TokenBase {
     return mintOnce("team", msg.sender, ALLOCATION_FOR_TEAM);
   }
 
-  ///@notice Mints the 100 million CYBR tokens allocated to the operational reserves.
+  ///@notice Mints the 100 million Cyber Security Ecosystem Tokens allocated to the operational reserves.
   ///The tokens are only available in the reserves after 1 year of the ICO end.
   function mintReserveTokens() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
@@ -158,7 +158,7 @@ contract CYBRToken is TokenBase {
     return mintOnce("advisors", msg.sender, ALLOCATION_FOR_ADVISORS);
   }
 
-  ///@notice Mints the 30 million CYBR tokens allocated to promotion.
+  ///@notice Mints the 30 million Cyber Security Ecosystem Tokens allocated to promotion.
   ///The tokens are available at the end of the ICO.
   function mintTokensForPromotion() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");

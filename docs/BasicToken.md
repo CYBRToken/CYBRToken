@@ -87,6 +87,8 @@ An uint256 representing the amount owned by the passed address.
 * [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
+* [CustomLockable](CustomLockable.md)
+* [CustomOwnable](CustomOwnable.md)
 * [CustomPausable](CustomPausable.md)
 * [CYBRToken](CYBRToken.md)
 * [ERC20](ERC20.md)

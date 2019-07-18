@@ -2,26 +2,26 @@
 
 View Source: [contracts/TokenBase.sol](../contracts/TokenBase.sol)
 
-**↗ Extends: [StandardToken](StandardToken.md), [TransferState](TransferState.md), [BulkTransfer](BulkTransfer.md), [Reclaimable](Reclaimable.md), [BurnableToken](BurnableToken.md)**
+**↗ Extends: [StandardToken](StandardToken.md), [TransferState](TransferState.md), [BulkTransfer](BulkTransfer.md), [Reclaimable](Reclaimable.md), [BurnableToken](BurnableToken.md), [CustomLockable](CustomLockable.md)**
 **↘ Derived Contracts: [CYBRToken](CYBRToken.md)**
 
 **TokenBase**
 
-CYBR Tokens are designed to incentivize and provide 
+Cyber Security Ecosystem Tokens are designed to incentivize and provide 
 functionality for the three-pronged CYBR solution. 
 Subscription services and the provision of blockchain related services 
-will be solely transacted utilizing CYBR Tokens. 
-Rewards for CYBR community members will be a determined allocation of CYBR Tokens. 
+will be solely transacted utilizing Cyber Security Ecosystem Tokens. 
+Rewards for CYBR community members will be a determined allocation of Cyber Security Ecosystem Tokens. 
 CYBR is a standard ERC20 smart contract-based to- ken running 
 on the Ethereum network and is implemented 
 within the business logic set forth by the Company’s developers.
-
+&nbsp;
 The CYBR utility token is redeemable for usage with BlindSpot 
 and global threat intelligence feeds. The CYBR initiative provides 
 protection to individual networks, SMEs and large-scale enterprise users. 
 Intelligence feeds are based on risk scores; packaged in a series of 
 products/services and delivered via a subscription model which can provide:
-
+&nbsp;
 - Assessed zero-day global threat feeds o Json, CSV and XML formats 
   - Utilizing IP tables firewall rules
   - Magento, Wordpress and related plugins
@@ -29,11 +29,11 @@ products/services and delivered via a subscription model which can provide:
 - Email alerts
 - Mobile apps
 - API key to access CYBR via apps/dapps
-
+&nbsp;
 Data feeds will be based on number of user licenses, to be purchased 
 on a yearly-based subscription model. Special needs assessments, customized solutions, 
 or any appliance applications can be purchased at an additional cost.
-
+&nbsp;
 The CYBR business model is simple: a subscription-based value-added service 
 with recurring revenues. The company has identified a number of ancillary 
 revenue streams, ranging from customized packages to the sale of propriety 
@@ -78,7 +78,7 @@ event Mint(address indexed to, uint256  amount);
 ⤾ overrides [BasicToken.transfer](BasicToken.md#transfer)
 
 ```js
-function transfer(address _to, uint256 _value) public nonpayable canTransfer 
+function transfer(address _to, uint256 _value) public nonpayable revertIfLocked canTransfer 
 returns(bool)
 ```
 
@@ -96,7 +96,7 @@ returns(bool)
 Transfers tokens from a specified wallet address.
 
 ```js
-function transferFrom(address _from, address _to, uint256 _value) public nonpayable canTransfer 
+function transferFrom(address _from, address _to, uint256 _value) public nonpayable revertIfLocked canTransfer 
 returns(bool)
 ```
 
@@ -115,7 +115,7 @@ returns(bool)
 Approves a wallet address to spend on behalf of the sender.
 
 ```js
-function approve(address _spender, uint256 _value) public nonpayable canTransfer 
+function approve(address _spender, uint256 _value) public nonpayable revertIfLocked canTransfer 
 returns(bool)
 ```
 
@@ -133,7 +133,7 @@ returns(bool)
 Increases the approval of the spender.
 
 ```js
-function increaseApproval(address _spender, uint256 _addedValue) public nonpayable canTransfer 
+function increaseApproval(address _spender, uint256 _addedValue) public nonpayable revertIfLocked canTransfer 
 returns(bool)
 ```
 
@@ -151,7 +151,7 @@ returns(bool)
 Decreases the approval of the spender.
 
 ```js
-function decreaseApproval(address _spender, uint256 _subtractedValue) public nonpayable canTransfer 
+function decreaseApproval(address _spender, uint256 _subtractedValue) public nonpayable revertIfLocked canTransfer 
 returns(bool)
 ```
 
@@ -169,7 +169,7 @@ returns(bool)
 Burns the coins held by the sender.
 
 ```js
-function burn(uint256 _value) public nonpayable whenNotPaused 
+function burn(uint256 _value) public nonpayable revertIfLocked whenNotPaused 
 ```
 
 **Arguments**
@@ -198,6 +198,8 @@ returns(bool)
 * [BulkTransfer](BulkTransfer.md)
 * [BurnableToken](BurnableToken.md)
 * [CustomAdmin](CustomAdmin.md)
+* [CustomLockable](CustomLockable.md)
+* [CustomOwnable](CustomOwnable.md)
 * [CustomPausable](CustomPausable.md)
 * [CYBRToken](CYBRToken.md)
 * [ERC20](ERC20.md)

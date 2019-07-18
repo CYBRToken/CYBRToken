@@ -361,6 +361,23 @@ limitations under the License.
 
 
 
+/*
+Copyright 2018 Binod Nirvan
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ */
+
+
 
 
 
@@ -427,9 +444,49 @@ contract Ownable {
 }
 
 
+///@title Custom Ownable
+///@notice Custom ownable contract.
+contract CustomOwnable is Ownable {
+  ///The trustee wallet.
+  address private _trustee;
+
+  event TrusteeAssigned(address indexed account);
+
+  ///@notice Validates if the sender is actually the trustee.
+  modifier onlyTrustee() {
+    require(msg.sender == _trustee, "Access is denied.");
+    _;
+  }
+
+  ///@notice Assigns or changes the trustee wallet.
+  ///@param _account A wallet address which will become the new trustee.
+  ///@return Returns true if the operation was successful.
+  function assignTrustee(address _account) external onlyOwner returns(bool) {
+    require(_account != address(0), "Please provide a valid address for trustee.");
+
+    _trustee = _account;
+    emit TrusteeAssigned(_account);
+    return true;
+  }
+
+  ///@notice Changes the owner of this contract.
+  ///@param _newOwner Specify a wallet address which will become the new owner.
+  ///@return Returns true if the operation was successful.
+  function reassignOwner(address _newOwner) external onlyTrustee returns(bool) {
+    super._transferOwnership(_newOwner);
+    return true;
+  }
+
+  ///@notice The trustee wallet has the power to change the owner in case of unforeseen or unavoidable situation.
+  ///@return Wallet address of the trustee account.
+  function getTrustee() external view returns(address) {
+    return _trustee;
+  }
+}
+
 
 ///@title This contract enables to create multiple contract administrators.
-contract CustomAdmin is Ownable {
+contract CustomAdmin is CustomOwnable {
   ///@notice List of administrators.
   mapping(address => bool) public admins;
 
@@ -549,6 +606,131 @@ contract CustomPausable is CustomAdmin {
   function unpause() external onlyAdmin whenPaused {
     paused = false;
     emit Unpaused();
+  }
+}
+/*
+Copyright 2018 Binod Nirvan
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http:///www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ */
+
+
+
+
+
+
+///@title Custom Lockable Contract
+///@author Binod Nirvan
+///@notice This contract enables Cyber Security Ecosystem Token admins
+///to lock tokens on an individual-wallet basis.
+///When tokens are locked for specific wallet,
+///they cannot transfer their balances
+///until the end of their locking period.
+///Furthermore, this feature is created to specifically
+///lock bounty, advisory, and team tokens
+///for a set period of time.
+///This feature once turned off cannot be switched on back again.
+contract CustomLockable is CustomAdmin {
+  ///Locking list contains list of wallets and their respective release dates.
+  mapping(address => uint256) public lockingList;
+
+  ///Signifies if the locking feature can be used.
+  bool public canLock = true;
+
+  event TokenLocked(address indexed _address, uint256 _releaseDate);
+  event TokenUnlocked(address indexed _address);
+  event LockingDisabled();
+
+  ///@notice Reverts this transfer if the wallet is in the locking list.
+  modifier revertIfLocked(address _wallet) {
+    require(!isLocked(_wallet), "The operation was cancelled because your tokens are locked.");
+    _;
+  }
+
+  ///@notice Checks if a wallet is locked for transfers.
+  function isLocked(address _wallet) public view returns(bool) {
+    uint256 _lockedUntil = lockingList[_wallet];
+
+    if(_lockedUntil > now) {
+      return true;
+    }
+
+    return false;
+  }
+
+  ///@notice Adds the specified address to the locking list.
+  ///@param _address The address to add to the locking list.
+  ///@param _releaseDate The date when the tokens become avaiable for transfer.
+  function addLock(address _address, uint256 _releaseDate) external onlyAdmin returns(bool) {
+    require(canLock, "Access is denied. This feature was already disabled by an administrator.");
+    require(_address != address(0), "Invalid address.");
+    require(!admins[_address], "Cannot lock administrators.");
+    require(_address != owner, "Cannot lock the owner.");
+
+    lockingList[_address] = _releaseDate;
+
+    if(_releaseDate > 0) {
+      emit TokenLocked(_address, _releaseDate);
+    } else {
+      emit TokenUnlocked(_address);
+    }
+
+    return true;
+  }
+
+  ///@notice Adds multiple addresses to the locking list.
+  ///@param _accounts The wallet addresses to add to the locking list.
+  ///@param _releaseDate The date when the tokens become avaiable for transfer.
+  function addManyLocks(address[] _accounts, uint256 _releaseDate) external onlyAdmin returns(bool) {
+    require(canLock, "Access is denied. This feature was already disabled by an administrator.");
+    require(_releaseDate > 0, "Invalid release date.");
+
+    for(uint8 i = 0; i < _accounts.length; i++) {
+      address _account = _accounts[i];
+
+      ///Zero address, admins, and owner cannot be locked.
+      if(_account != address(0) && !admins[_account] && _account != owner) {
+        lockingList[_account] = _releaseDate;
+        emit TokenLocked(_account, _releaseDate);
+      }
+    }
+
+    return true;
+  }
+
+  ///@notice Removes multiple addresses from the locking list.
+  ///@param _accounts The wallet addresses to unlock.
+  function removeManyLocks(address[] _accounts) external onlyAdmin returns(bool) {
+    require(canLock, "Access is denied. This feature was already disabled by an administrator.");
+
+    for(uint8 i = 0; i < _accounts.length; i++) {
+      address _account = _accounts[i];
+
+      lockingList[_account] = 0;
+      emit TokenUnlocked(_account);
+    }
+
+    return true;
+  }
+
+  ///@notice Once locking feature is disable, it cannot be
+  ///truned back on thenceforth.
+  function disableLocking() external onlyAdmin returns(bool) {
+    require(canLock, "The token lock feature is already disabled.");
+
+    canLock = false;
+    emit LockingDisabled();
+    return true;
   }
 }
 /*
@@ -756,21 +938,21 @@ contract Reclaimable is CustomAdmin {
 
 ///@title CYBRToken Base Contract
 ///@author Binod Nirvan
-///@notice CYBR Tokens are designed to incentivize and provide 
+///@notice Cyber Security Ecosystem Tokens are designed to incentivize and provide 
 ///functionality for the three-pronged CYBR solution. 
 ///Subscription services and the provision of blockchain related services 
-///will be solely transacted utilizing CYBR Tokens. 
-///Rewards for CYBR community members will be a determined allocation of CYBR Tokens. 
+///will be solely transacted utilizing Cyber Security Ecosystem Tokens. 
+///Rewards for CYBR community members will be a determined allocation of Cyber Security Ecosystem Tokens. 
 ///CYBR is a standard ERC20 smart contract-based to- ken running 
 ///on the Ethereum network and is implemented 
 ///within the business logic set forth by the Company’s developers.
-/// 
+///&nbsp;
 ///The CYBR utility token is redeemable for usage with BlindSpot 
 ///and global threat intelligence feeds. The CYBR initiative provides 
 ///protection to individual networks, SMEs and large-scale enterprise users. 
 ///Intelligence feeds are based on risk scores; packaged in a series of 
 ///products/services and delivered via a subscription model which can provide:
-/// 
+///&nbsp;
 ///- Assessed zero-day global threat feeds o Json, CSV and XML formats 
 ///  - Utilizing IP tables firewall rules
 ///  - Magento, Wordpress and related plugins
@@ -778,26 +960,26 @@ contract Reclaimable is CustomAdmin {
 ///- Email alerts
 ///- Mobile apps
 ///- API key to access CYBR via apps/dapps
-/// 
+///&nbsp;
 ///Data feeds will be based on number of user licenses, to be purchased 
 ///on a yearly-based subscription model. Special needs assessments, customized solutions, 
 ///or any appliance applications can be purchased at an additional cost.
-/// 
+///&nbsp;
 ///The CYBR business model is simple: a subscription-based value-added service 
 ///with recurring revenues. The company has identified a number of ancillary 
 ///revenue streams, ranging from customized packages to the sale of propriety 
 ///and modded hardware devices. However, it should be noted that the potent
 ///solution that is BlindSpot will drive our quest for adoption.
-contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, BurnableToken {
+contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, BurnableToken, CustomLockable {
   //solhint-disable
   uint8 public constant decimals = 18;
-  string public constant name = "CYBR Token";
+  string public constant name = "CYBR - Cyber Security Ecosystem Token";
   string public constant symbol = "CYBR";
   //solhint-enable
 
   uint256 internal constant MILLION = 1000000 * 1 ether; 
   uint256 internal constant BILLION = 1000000000 * 1 ether; 
-  uint256 public constant MAX_SUPPLY = 1 * BILLION;
+  uint256 public constant MAX_SUPPLY = BILLION;
   uint256 public constant INITIAL_SUPPLY = 510 * MILLION;//51%
 
   event Mint(address indexed to, uint256 amount);
@@ -806,12 +988,16 @@ contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, B
     mintTokens(msg.sender, INITIAL_SUPPLY);
   }
 
-  ///@notice Transfers the specified value of CYBR tokens to the destination address. 
+  ///@notice Transfers the specified value of Cyber Security Ecosystem Tokens to the destination address. 
   //Transfers can only happen when the transfer state is enabled. 
   //Transfer state can only be enabled after the end of the crowdsale.
   ///@param _to The destination wallet address to transfer funds to.
   ///@param _value The amount of tokens to send to the destination address.
-  function transfer(address _to, uint256 _value) public canTransfer(msg.sender) returns(bool) {
+  function transfer(address _to, uint256 _value) 
+  public
+  revertIfLocked(msg.sender)
+  canTransfer(msg.sender)
+  returns(bool) {
     require(_to != address(0), "Invalid address.");
     return super.transfer(_to, _value);
   }
@@ -821,7 +1007,11 @@ contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, B
   ///@param _from The address to transfer funds from.
   ///@param _to The address to transfer funds to.
   ///@param _value The amount of tokens to transfer.
-  function transferFrom(address _from, address _to, uint256 _value) public canTransfer(_from) returns(bool) {
+  function transferFrom(address _from, address _to, uint256 _value)
+  public
+  revertIfLocked(_from)
+  canTransfer(_from)
+  returns(bool) {
     require(_to != address(0), "Invalid address.");
     return super.transferFrom(_from, _to, _value);
   }
@@ -830,7 +1020,11 @@ contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, B
   ///@dev This function is overridden to leverage transfer state feature.
   ///@param _spender The address which is approved to spend on behalf of the sender.
   ///@param _value The amount of tokens approve to spend. 
-  function approve(address _spender, uint256 _value) public canTransfer(msg.sender) returns(bool) {
+  function approve(address _spender, uint256 _value)
+  public
+  revertIfLocked(msg.sender)
+  canTransfer(msg.sender)
+  returns(bool) {
     require(_spender != address(0), "Invalid address.");
     return super.approve(_spender, _value);
   }
@@ -839,7 +1033,11 @@ contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, B
   ///@dev This function is overridden to leverage transfer state feature.
   ///@param _spender The address which is approved to spend on behalf of the sender.
   ///@param _addedValue The added amount of tokens approved to spend.
-  function increaseApproval(address _spender, uint256 _addedValue) public canTransfer(msg.sender) returns(bool) {
+  function increaseApproval(address _spender, uint256 _addedValue)
+  public
+  revertIfLocked(msg.sender)
+  canTransfer(msg.sender)
+  returns(bool) {
     require(_spender != address(0), "Invalid address.");
     return super.increaseApproval(_spender, _addedValue);
   }
@@ -848,7 +1046,11 @@ contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, B
   ///@dev This function is overridden to leverage transfer state feature.
   ///@param _spender The address of the spender to decrease the allocation from.
   ///@param _subtractedValue The amount of tokens to subtract from the approved allocation.
-  function decreaseApproval(address _spender, uint256 _subtractedValue) public canTransfer(msg.sender) returns(bool) {
+  function decreaseApproval(address _spender, uint256 _subtractedValue)
+  public
+  revertIfLocked(msg.sender)
+  canTransfer(msg.sender)
+  returns(bool) {
     require(_spender != address(0), "Invalid address.");
     return super.decreaseApproval(_spender, _subtractedValue);
   }
@@ -856,7 +1058,10 @@ contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, B
   ///@notice Burns the coins held by the sender.
   ///@param _value The amount of coins to burn.
   ///@dev This function is overridden to leverage Pausable feature.
-  function burn(uint256 _value) public whenNotPaused {
+  function burn(uint256 _value)
+  public
+  revertIfLocked(msg.sender)
+  whenNotPaused {
     super.burn(_value);
   }
 
@@ -880,13 +1085,13 @@ contract TokenBase is StandardToken, TransferState, BulkTransfer, Reclaimable, B
 }
 
 
-///@title CYBR Token
+///@title Cyber Security Ecosystem Token
 ///@author Binod Nirvan
-///@notice CYBR Tokens are designed to incentivize and provide 
+///@notice Cyber Security Ecosystem Tokens are designed to incentivize and provide 
 ///functionality for the three-pronged CYBR solution. 
 ///Subscription services and the provision of blockchain related services 
-///will be solely transacted utilizing CYBR Tokens. 
-///Rewards for CYBR community members will be a determined allocation of CYBR Tokens. 
+///will be solely transacted utilizing Cyber Security Ecosystem Tokens. 
+///Rewards for CYBR community members will be a determined allocation of Cyber Security Ecosystem Tokens. 
 ///CYBR is a standard ERC20 smart contract-based to- ken running 
 ///on the Ethereum network and is implemented 
 ///within the business logic set forth by the Company’s developers.
@@ -955,7 +1160,7 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice This function enables the whitelisted application (internal application) to set the 
-  /// ICO end date and can only be used once.
+  ///ICO end date and can only be used once.
   ///@param _date The date to set as the ICO end date.
   function setICOEndDate(uint _date) external onlyAdmin returns(bool) {
     require(icoEndDate == 0, "The ICO end date was already set.");
@@ -966,8 +1171,8 @@ contract CYBRToken is TokenBase {
     return true;
   }
 
-  ///@notice Mints the 100 million CYBR tokens allocated to the CYBRToken founders.
-  //The tokens are only available to the founders after 18 months of the ICO end.
+  ///@notice Mints the 100 million Cyber Security Ecosystem Tokens allocated to the CYBRToken founders.
+  ///The tokens are only available to the founders after 18 months of the ICO end.
   function mintTokensForFounders() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -976,8 +1181,8 @@ contract CYBRToken is TokenBase {
     return mintOnce("founders", msg.sender, ALLOCATION_FOR_FOUNDERS);
   }
 
-  ///@notice Mints 100 million CYBR tokens allocated to the CYBRToken team.
-  //The tokens are only available to the founders after 1 year of the ICO end.
+  ///@notice Mints 100 million Cyber Security Ecosystem Tokens allocated to the CYBRToken team.
+  ///The tokens are only available to the founders after 1 year of the ICO end.
   function mintTokensForTeam() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -986,8 +1191,8 @@ contract CYBRToken is TokenBase {
     return mintOnce("team", msg.sender, ALLOCATION_FOR_TEAM);
   }
 
-  ///@notice Mints the 100 million CYBR tokens allocated to the operational reserves.
-  //The tokens are only available in the reserves after 1 year of the ICO end.
+  ///@notice Mints the 100 million Cyber Security Ecosystem Tokens allocated to the operational reserves.
+  ///The tokens are only available in the reserves after 1 year of the ICO end.
   function mintReserveTokens() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -997,13 +1202,13 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints the 50 million tokens allocated for initial partnerships.
-  //The tokens are only available to the partners after 6 months of the ICO end.
+  ///The tokens are only available to the partners after 6 months of the ICO end.
   function mintTokensForInitialPartnerships() external onlyAdmin returns(bool) {
     return mintOnce("initialPartnerships", msg.sender, ALLOCATION_FOR_INITIAL_PARTNERSHIPS);
   }
 
   ///@notice Mints the 50 million tokens allocated for partnerships.
-  //The tokens are only available to the partners after 6 months of the ICO end.
+  ///The tokens are only available to the partners after 6 months of the ICO end.
   function mintTokensForPartnerships() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -1013,7 +1218,7 @@ contract CYBRToken is TokenBase {
   }
 
   ///@notice Mints the 60 million tokens allocated to the CYBRToken advisors.
-  //The tokens are only available to the advisors after 1 year of the ICO end.
+  ///The tokens are only available to the advisors after 1 year of the ICO end.
   function mintTokensForAdvisors() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");
@@ -1022,8 +1227,8 @@ contract CYBRToken is TokenBase {
     return mintOnce("advisors", msg.sender, ALLOCATION_FOR_ADVISORS);
   }
 
-  ///@notice Mints the 30 million CYBR tokens allocated to promotion.
-  //The tokens are available at the end of the ICO.
+  ///@notice Mints the 30 million Cyber Security Ecosystem Tokens allocated to promotion.
+  ///The tokens are available at the end of the ICO.
   function mintTokensForPromotion() external onlyAdmin returns(bool) {
     require(targetReached, "Sorry, you can't mint at this time because the target hasn't been reached yet.");
     require(icoEndDate != 0, "You need to specify the ICO end date before minting the tokens.");

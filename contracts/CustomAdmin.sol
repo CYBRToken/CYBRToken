@@ -16,11 +16,11 @@ limitations under the License.
 
 pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./CustomOwnable.sol";
 
 
 ///@title This contract enables to create multiple contract administrators.
-contract CustomAdmin is Ownable {
+contract CustomAdmin is CustomOwnable {
   ///@notice List of administrators.
   mapping(address => bool) public admins;
 
